@@ -5,6 +5,7 @@
 - [Vite](https://vitejs.dev/)
 - [Vite Plugin Pages](https://github.com/hannoeru/vite-plugin-pages) `File system based routing for Vue 3`
 - [BootstrapVue 3](https://cdmoro.github.io/bootstrap-vue-3/)
+- [LIFF SDK](https://www.npmjs.com/package/@line/liff)
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 
