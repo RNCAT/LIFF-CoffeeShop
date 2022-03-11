@@ -37,15 +37,14 @@ export default {
   data() {
     return {
       liffId: import.meta.env.VITE_LIFF_ID_REGISTER,
-      webhook: import.meta.env.VITE_WEBHOOK_API_URI,
       profileImage: '',
       form: {
-        lineId: "",
-        lineName: "",
-        firstName: "",
-        lastName: "",
-        phone: "",
-        address: "",
+        lineId: '',
+        lineName: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        address: '',
       },
     }
   },
@@ -58,14 +57,13 @@ export default {
     },
 
     async register() {
-      await axios.post(`${this.webhook}/user/${this.form.lineId}`, this.form)
-
+      await axios.post(`${this.$webhook}/user/${this.form.lineId}`, this.form)
 
       if (!['none', 'external'].includes(liff.getContext().type)) {
         await liff.sendMessages([{ type: 'text', text: 'registered' }])
         liff.closeWindow()
       }
-    }
+    },
   },
   async mounted() {
     this.profileImage = profileImage
@@ -75,6 +73,6 @@ export default {
     if (!liff.isLoggedIn()) liff.login()
 
     this.getUserProfile()
-  }
+  },
 }
 </script>

@@ -13,6 +13,8 @@ const router = createRouter({
 })
 
 const app = createApp(App)
+
+app.config.globalProperties.$webhook = import.meta.env.VITE_WEBHOOK_API_URI
 app.use(router)
 app.use(BootstrapVue3)
 app.mount('#app')
