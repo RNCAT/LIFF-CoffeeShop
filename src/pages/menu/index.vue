@@ -1,17 +1,25 @@
 <template>
   <b-card>
-    <b-tabs content-class="mt-3" justified lazy>
-      <b-tab title="Coffee" active>
+    <b-tabs v-model="tabIndex" content-class="mt-3" justified lazy>
+      <b-tab title="Coffee">
         <b-overlay :show="coffeeOverlay" rounded="sm">
           <b-col v-for="coffee in coffees" :key="coffee.coffeeId">
-            <Coffee :coffee="coffee" />
+            <Coffee
+              :coffee="coffee"
+              v-on:add:coffee="addToCart"
+              v-on:delete:coffee="deleteFromCart"
+            />
           </b-col>
         </b-overlay>
       </b-tab>
       <b-tab title="Bakery">
         <b-overlay :show="bakeryOverlay" rounded="sm">
           <b-col v-for="bakery in bakeries" :key="bakery.bakeryId">
-            <Bakery :bakery="bakery" />
+            <Bakery
+              :bakery="bakery"
+              v-on:add:bakery="addToCart"
+              v-on:delete:bakery="deleteFromCart"
+            />
           </b-col>
         </b-overlay>
       </b-tab>
@@ -45,7 +53,8 @@ export default {
       snackbar: false,
       text: `Added to cart!`,
       coffeeOverlay: true,
-      bakeryOverlay: true
+      bakeryOverlay: true,
+      tabIndex: 0
     }
   },
   methods: {
@@ -57,15 +66,71 @@ export default {
       this.pictureURL = pictureUrl
     },
 
+    async getProducts() {
+      const { data } = await axios.get(`${this.$webhook}/products/${this.lineId}`)
+      this.coffees = data.data.coffees
+      this.bakeries = data.data.bakeries
+
+      this.coffeeOverlay = false
+      this.bakeryOverlay = false
+    },
+
+    async addToCart(item) {
+      try {
+        const data = { data: item, lineId: this.lineId }
+
+        await axios.post(`${this.$webhook}/cart`, data)
+
+        item.qty++
+        tthis.text = `${item.name} is added to cart !`
+        this.snackbar = true
+        this.btnstatus = false
+      } catch (error) {
+        this.text = error.message
+        this.snackbar = true
+        this.btnstatus = false
+      }
+    },
+
+    async deleteFromCart(item) {
+      try {
+        const data = { data: item, lineId: this.lineId }
+
+        await axios.delete(`${this.$webhook}/cart`, {
+          data: data,
+        })
+
+        item.qty = 0
+        this.text = `${item.name} is deleted from cart !`
+        this.snackbar = true
+        this.btnstatus = false
+      } catch (error) {
+        this.text = error.message
+        this.snackbar = true
+        this.btnstatus = false
+      }
+    }
+
   },
   async mounted() {
-    const { data } = await axios.get('https://my-json-server.typicode.com/RNCAT/fakedb/Products')
-    this.coffees = data.coffees
-    this.bakeries = data.bakeries
+
+    (this.$route.query.tab !== undefined) ? this.tab = this.$route.query.tab : this.tab = 'coffee'
 
 
-    this.coffeeOverlay = false
-    this.bakeryOverlay = false
+    if (this.tab === 'coffee') {
+      this.liffId = import.meta.env.VITE_LIFF_ID_COFFEE
+    } else {
+      this.liffId = import.meta.env.VITE_LIFF_ID_BAKERY
+      this.tabIndex = 1
+    }
+
+    await liff.init({ liffId: this.liffId })
+
+    if (!liff.isLoggedIn()) liff.login()
+
+    await this.getUserProfile()
+
+    this.getProducts()
   }
 }
 </script>
