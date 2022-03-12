@@ -2,7 +2,6 @@
   <b-card>
     <b-tabs content-class="mt-3" justified lazy>
       <b-tab title="Coffee" active>
-        <p>Coffee</p>
         <b-overlay :show="coffeeOverlay" rounded="sm">
           <b-col v-for="coffee in coffees" :key="coffee.coffeeId">
             <Coffee :coffee="coffee" />
@@ -10,7 +9,11 @@
         </b-overlay>
       </b-tab>
       <b-tab title="Bakery">
-        <p>Bakery</p>
+        <b-overlay :show="bakeryOverlay" rounded="sm">
+          <b-col v-for="bakery in bakeries" :key="bakery.bakeryId">
+            <Bakery :bakery="bakery" />
+          </b-col>
+        </b-overlay>
       </b-tab>
     </b-tabs>
   </b-card>
@@ -20,10 +23,12 @@
 import liff from "@line/liff"
 import axios from "axios"
 import Coffee from '../../components/menu/Coffee.vue'
+import Bakery from "../../components/menu/Bakery.vue"
 
 export default {
   components: {
-    Coffee
+    Coffee,
+    Bakery
   },
   data() {
     return {
@@ -40,6 +45,7 @@ export default {
       snackbar: false,
       text: `Added to cart!`,
       coffeeOverlay: true,
+      bakeryOverlay: true
     }
   },
   methods: {
@@ -59,6 +65,7 @@ export default {
 
 
     this.coffeeOverlay = false
+    this.bakeryOverlay = false
   }
 }
 </script>
