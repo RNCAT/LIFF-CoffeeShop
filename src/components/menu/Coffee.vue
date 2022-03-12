@@ -1,5 +1,12 @@
 <template>
-  <b-card :img-src="coffee.imageUrl" img-alt="Image" img-top :title="coffee.name" class="mb-2">
+  <b-card
+    :img-src="coffee.imageUrl"
+    img-alt="Image"
+    img-top
+    :title="coffee.name"
+    :sub-title="priceText"
+    class="mb-2"
+  >
     <b-row>
       <b-col md="8">
         <b-form-radio v-model="coffee.type" name="some-radios" value="hot">Hot</b-form-radio>
@@ -34,6 +41,7 @@ export default {
         { value: '100', text: '100%' },
         { value: '150', text: '150%', },
       ],
+      priceText: `฿${this.coffee.price}`
     }
   },
   methods: {
