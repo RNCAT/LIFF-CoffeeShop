@@ -17,12 +17,13 @@
       </b-col>
     </b-row>
     <br />
+    <b-card-text v-if="coffee.qty > 0">Quantity: {{ coffee.qty }}</b-card-text>
     <div class="d-grid gap-2">
       <b-button
         block
         variant="primary"
         @click="addToCart(coffee)"
-        :disabled="!coffee.type || !coffee.sweet"
+        :disabled="!coffee.type || !coffee.sweet || coffee.sweet === 1"
       >Add to cart</b-button>
       <b-button block variant="danger" @click="deleteFromCart(coffee)" v-if="coffee.qty > 0">Remove</b-button>
     </div>
@@ -47,6 +48,7 @@ export default {
   methods: {
     async addToCart(item) {
       this.$emit('add:coffee', item)
+      console.log(this.coffee.sweet);
     },
     async deleteFromCart(item) {
       this.$emit('delete:coffee', item)

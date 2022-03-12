@@ -7,6 +7,7 @@
     :sub-title="bakeryPrice"
     class="mb-2"
   >
+    <b-card-text v-if="bakery.qty > 0">Quantity: {{ bakery.qty }}</b-card-text>
     <br />
     <div class="d-grid gap-2">
       <b-button block variant="primary" @click="addToCart(bakery)">Add to cart</b-button>
@@ -20,7 +21,7 @@ export default {
   props: ['bakery'],
   data() {
     return {
-      bakeryPrice: `฿${this.bakery.price}`
+      bakeryPrice: `฿${this.bakery.price}`,
     }
   },
   methods: {
