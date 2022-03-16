@@ -68,9 +68,7 @@ export default {
   async mounted() {
     this.profileImage = profileImage
 
-    await liff.init({ liffId: this.liffId })
-
-    if (!liff.isLoggedIn()) liff.login()
+    await liff.init({ liffId: this.liffId, withLoginOnExternalBrowser: true })
 
     this.getUserProfile()
   },

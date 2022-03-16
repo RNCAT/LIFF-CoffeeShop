@@ -24,6 +24,10 @@
         </b-overlay>
       </b-tab>
     </b-tabs>
+    <br />
+    <div class="d-grid gap-2">
+      <b-button block variant="danger" @click="closeMenu()">Close</b-button>
+    </div>
   </b-card>
 </template>
 
@@ -109,6 +113,15 @@ export default {
         this.snackbar = true
         this.btnstatus = false
       }
+    },
+
+    async closeMenu() {
+      await liff.sendMessages({
+        type: 'message',
+        text: 'แสดงข้อมูลสินค้าในตระกร้า'
+      })
+
+      liff.closeWindow()
     }
 
   },
@@ -124,9 +137,7 @@ export default {
       this.tabIndex = 1
     }
 
-    await liff.init({ liffId: this.liffId })
-
-    if (!liff.isLoggedIn()) liff.login()
+    await liff.init({ liffId: this.liffId, withLoginOnExternalBrowser: true })
 
     await this.getUserProfile()
 
