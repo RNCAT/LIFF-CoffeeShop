@@ -116,10 +116,10 @@ export default {
     },
 
     async closeMenu() {
-      await liff.sendMessages({
-        type: 'message',
+      await liff.sendMessages([{
+        type: 'text',
         text: 'แสดงข้อมูลสินค้าในตระกร้า'
-      })
+      }])
 
       liff.closeWindow()
     }
